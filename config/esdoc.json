@@ -1,0 +1,29 @@
+{
+  "source": "./",
+  "excludes": ["(lib|doc|docs|test|node_modules|Test.*.js$)"],
+  "destination": "./node_docs",
+  "plugins": [
+    {
+      "name": "esdoc-commonjs-plugin"
+    },
+    {
+      "name": "esdoc-publish-markdown-plugin"
+    },
+    {
+      "name": "esdoc-standard-plugin",
+      "option": {
+        "lint": { "enable": true },
+        "coverage": { "enable": true },
+        "accessor": {"access": ["public", "protected"], "autoPrivate": true},
+        "undocumentIdentifier": {"enable": true},
+        "unexportedIdentifier": {"enable": false},
+        "typeInference": {"enable": true}
+      },
+      "manual": {
+        "asset": "doc",
+        "index" : "README.md"
+      }
+    }
+  ]
+}
+

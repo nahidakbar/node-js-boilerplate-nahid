@@ -1,0 +1,31 @@
+{
+  "name": "jbn",
+  "version": "0.3.0",
+  "description": "boilerplate to automate standard good practice stuff across js projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nahid Akbar <mail@nahidakbar.net> (http://nahidakbar.net/)",
+  "license": "MIT",
+  "dependencies": {
+    "apidoc": "^0.17.6",
+    "apidoc-swagger": "^0.2.2",
+    "babel-cli": "latest",
+    "babel-preset-env": "latest",
+    "babel-plugin-transform-runtime": "latest",
+    "browserify": "latest",
+    "chalk": "^2.1.0",
+    "esdoc": "latest",
+    "esdoc-commonjs-plugin": "latest",
+    "esdoc-publish-markdown-plugin": "latest",
+    "esdoc-standard-plugin": "latest",
+    "eslint": "latest",
+    "install": "^0.10.1",
+    "js-beautify-nahid": "latest",
+    "mocha": "latest",
+    "nyc": "^11.2.1",
+    "yargs": "^8.0.2"
+  },
+  "bin": "./index.js"
+}
