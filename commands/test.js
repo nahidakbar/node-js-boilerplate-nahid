@@ -10,6 +10,13 @@ module.exports.command = 'test';
 module.exports.aliases = alias('test');
 module.exports.desc = 'run mocha test cases';
 
+module.exports.builder = {
+  bail: {
+    alias: 'b',
+    default: false
+  }
+};
+
 module.exports.handler = config =>
 {
   //~ run(config, `${config.bin('nyc')}`, `--temp-directory`, `node_coverage`, `-a`, `-x`, `node_*`, `-x`, `**/*Test*.js`, `-s`, `${config.bin('mocha')}`, `-b`, `**/*Test.js`);
@@ -29,7 +36,14 @@ module.exports.handler = config =>
     }
     catch(e)
     {
-      failed = e;
+      if (config.bail)
+      {
+        throw e;
+      }
+      else
+      {
+        failed = e;
+      }
     }
     for (let file of fs.readdirSync(path.join(config.projectDirectory, 'node_coverage')))
     {
@@ -46,7 +60,7 @@ module.exports.handler = config =>
       fs.unlinkSync(covPath);
     }
   }
-  
+
   //~ // collate coverage files into one
   //~ let coverage = null;
   //~ for (let file of fs.readdirSync(path.join(config.projectDirectory, 'node_coverage')))
@@ -64,11 +78,11 @@ module.exports.handler = config =>
     //~ fs.unlinkSync(covPath);
   //~ }
 
-  
+
   if (coverage)
   {
     fs.writeFileSync(path.join(config.projectDirectory, 'node_coverage', 'coverage-final.json'), JSON.stringify(coverage.toJSON()));
-  
+
     // write html reports
     run(config, `${config.bin('nyc')}`, '--temp-directory', `node_coverage`, '--report-dir', `node_docs/coverage`, `-r`, `html`, `report`);
 
@@ -79,22 +93,22 @@ module.exports.handler = config =>
         s = fc.toSummary();
         summary.merge(s);
     });
-    
+
     createBadge('statement coverage', summary.statements, `node_docs/coverage/statements.svg`);
     createBadge('function coverage', summary.functions, `node_docs/coverage/functions.svg`);
     createBadge('branch coverage', summary.branches, `node_docs/coverage/branches.svg`);
     createBadge('line coverage', summary.lines, `node_docs/coverage/lines.svg`);
     createBadge('github', 'public', `node_docs/coverage/public.svg`);
     createBadge('github', 'private', `node_docs/coverage/private.svg`);
-    
+
     // insead of printing output on each run, we produce one report at the end
     run(config, `${config.bin('nyc')}`, '--temp-directory', `node_coverage`, `report`);
-    
+
     // check combined coverage
     run(config, `${config.bin('nyc')}`, '--temp-directory', 'node_coverage', `check-coverage`, `--lines`, `80`, `--functions`, `80`, `--branches`, `80`);
     if (failed)
     {
-      throw failed; 
+      throw failed;
     }
   }
   else
