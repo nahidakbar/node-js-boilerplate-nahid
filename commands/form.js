@@ -8,7 +8,12 @@ module.exports.desc = 'format source code';
 
 module.exports.handler = config =>
 {
-  for (let file of find(config.sourceDirectory))
+  let files = config._.slice(1);
+  if (!files.length)
+  {
+    files = find(config.sourceDirectory);
+  }
+  for (let file of files)
   {
     run(config, `${config.bin('js-beautify')}`, `--config`, `${config.configDirectory}/js-beautify.json`, `-r`, `-f`, `${file}`);
   }

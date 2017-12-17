@@ -42,7 +42,8 @@ module.exports.handler = config =>
       }
       else
       {
-        failed = e;
+        failed = failed || {};
+        failed[file] = e;
       }
     }
     for (let file of fs.readdirSync(path.join(config.projectDirectory, 'node_coverage')))
@@ -108,7 +109,7 @@ module.exports.handler = config =>
     run(config, `${config.bin('nyc')}`, '--temp-directory', 'node_coverage', `check-coverage`, `--lines`, `80`, `--functions`, `80`, `--branches`, `80`);
     if (failed)
     {
-      throw failed;
+      throw new Error(`Following tests failed: \n` + Object.entries(failed).map(entry => 'mocha ' + entry[0] + ': ' + entry[1].stack).join('\n'));
     }
   }
   else
