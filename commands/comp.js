@@ -18,7 +18,7 @@ module.exports.builder = {
 module.exports.handler = config =>
 {
   const watch = (config.watch? `--watch` : undefined);
-  run(config, `${config.bin('babel')}`, `--presets`, `latest`, `--plugins`, `transform-runtime`, config.sourceDirectory, `--out-dir`, `${config.projectDirectory}/lib`, watch);
+  run(config, `${config.bin('babel')}`, `--presets`, `env`, `--plugins`, `transform-runtime`, config.sourceDirectory, `--out-dir`, `${config.projectDirectory}/lib`, watch);
   if (config.bundle)
   {
     run(config, `${config.bin('browserify')}`, `-e`, `${config.projectDirectory}/lib/index.js`, `-s`, config.bundle, `-o`, `${config.projectDirectory}/lib/${config.bundle}.js`);
